@@ -1,0 +1,9 @@
+{
+  "name": "hello-sumvec",
+  "version": "0.1.0",
+  "description": "Placeholder plugin to verify the SumvecAI marketplace is wired up correctly.",
+  "author": {
+    "name": "SumvecAI",
+    "url": "https://github.com/SumvecAI"
+  }
+}

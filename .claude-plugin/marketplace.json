@@ -1,0 +1,15 @@
+{
+  "name": "sumvecai",
+  "owner": {
+    "name": "SumvecAI",
+    "url": "https://github.com/SumvecAI"
+  },
+  "description": "Claude Code plugins maintained by SumvecAI.",
+  "plugins": [
+    {
+      "name": "hello-sumvec",
+      "source": "./plugins/hello-sumvec",
+      "description": "Placeholder plugin to verify the marketplace works."
+    }
+  ]
+}
