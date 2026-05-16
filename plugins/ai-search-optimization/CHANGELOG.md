@@ -5,6 +5,17 @@ All notable changes to this plugin are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] — 2026-05-17
+
+### Added
+
+- `/aiso-audit <url-or-sitemap-url>` slash command. Runs the full 10-step audit workflow with explicit source-stamping on every finding (`[google: …]`, `[research: …]`, `[vendor: …]`, or `[Industry practice]`) and writes the report to `./aiso-audit-<host>-<date>.md`. Accepts a page URL, a sitemap URL, or a bare domain; for sitemaps, asks the user which pages to audit (default 3–8 representative pages).
+- Source-class tagging convention documented in the command and enforced in the output spec. The plugin's existing "Google-stated vs. industry practice" discipline is now visible inline in every audit deliverable.
+
+### Changed
+
+- Marketplace description updated to mention the slash command.
+
 ## [1.0.0] — 2026-05-16
 
 ### Initial release

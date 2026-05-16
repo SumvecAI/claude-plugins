@@ -1,7 +1,7 @@
 # ai-search-optimization
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-1.0.0-0E0E0E)](./.claude-plugin/plugin.json)
+[![Version](https://img.shields.io/badge/Version-1.1.0-0E0E0E)](./.claude-plugin/plugin.json)
 [![Maintained by Sumvec.ai](https://img.shields.io/badge/Maintained%20by-Sumvec.ai-D4A27F)](https://sumvec.ai)
 
 A Claude Code plugin that **audits and optimizes a webpage or site for AI search visibility** — Google AI Overviews, Google AI Mode, ChatGPT Search, Perplexity, Claude, Gemini, and Copilot.
@@ -39,7 +39,17 @@ Then trigger it naturally — Claude will invoke the skill from descriptions lik
 - *"How do I get my docs cited by ChatGPT and Perplexity?"*
 - *"Review my structured data for AI search"*
 
-Or invoke explicitly:
+Or invoke the slash command directly with a URL:
+
+```
+/aiso-audit https://example.com/blog/post
+/aiso-audit https://example.com/sitemap.xml
+/aiso-audit example.com
+```
+
+The command runs the full 10-step workflow, stamps every finding with its source class — `[google: <url>]`, `[research: <url>]`, `[vendor: <url>]`, or `[Industry practice]` — and writes the audit to `./aiso-audit-<host>-<date>.md`. For a sitemap or bare domain, it asks which pages to audit first (default: 3–8 representative pages).
+
+You can also invoke the skill without a slash command:
 
 ```
 /ai-search-optimization:ai-search-optimization
@@ -51,6 +61,8 @@ Or invoke explicitly:
 ai-search-optimization/
 ├── .claude-plugin/
 │   └── plugin.json
+├── commands/
+│   └── aiso-audit.md                         ← /aiso-audit <url-or-sitemap>
 ├── skills/
 │   └── ai-search-optimization/
 │       ├── SKILL.md                          ← the playbook
@@ -90,7 +102,7 @@ That's why this skill is useful: it replaces vague "boost your AI visibility" ad
 
 ## Freshness
 
-Last reviewed against Google's guide: **2026-05-16** (Google's page was last updated 2026-05-15).
+Last reviewed against Google's guide: **2026-05-17** (Google's page was last updated 2026-05-15).
 
 Google's guidance for AI Overviews is still evolving. We re-read the canonical guide quarterly and bump the plugin version when material changes. Watch the [changelog](https://github.com/SumvecAI/claude-plugins/blob/main/plugins/ai-search-optimization/CHANGELOG.md) or `/plugin update` periodically.
 
