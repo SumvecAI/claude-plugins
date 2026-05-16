@@ -1,0 +1,32 @@
+# Example Co.
+
+> Example Co. builds developer tools for distributed tracing. This file summarizes
+> our site for AI clients that consume llms.txt. Note: Google has stated it does not
+> use llms.txt for AI Overviews — we publish this primarily for developers, internal
+> ingestion pipelines, and agentic clients that may parse it.
+
+## Product
+- [Overview](https://example.com/product): What Example does and who it's for.
+- [Pricing](https://example.com/pricing): Plans, limits, and enterprise contact.
+- [Changelog](https://example.com/changelog): Release notes, updated weekly.
+
+## Docs
+- [Quickstart](https://example.com/docs/quickstart): Get tracing up in 5 minutes.
+- [Concepts](https://example.com/docs/concepts): Spans, traces, samplers, exporters.
+- [API reference](https://example.com/docs/api): REST and SDK reference.
+- [SDK: Node.js](https://example.com/docs/sdk/node): Install and configure the Node SDK.
+- [SDK: Python](https://example.com/docs/sdk/python): Install and configure the Python SDK.
+- [SDK: Go](https://example.com/docs/sdk/go): Install and configure the Go SDK.
+
+## Engineering blog
+- [How we cut p99 latency by 60%](https://example.com/blog/p99-latency): Case study with original perf data.
+- [Why we chose ClickHouse](https://example.com/blog/clickhouse): Architecture decision record.
+- [Sampling at scale](https://example.com/blog/sampling): Adaptive sampling strategies we've tried.
+
+## Company
+- [About](https://example.com/about): Company history and founders.
+- [Security](https://example.com/security): SOC 2 status, encryption, data handling.
+- [Contact](https://example.com/contact): Support, sales, press.
+
+## Optional: full content
+- [llms-full.txt](https://example.com/llms-full.txt): Full Markdown text of the docs and product pages, for clients that want a single file.

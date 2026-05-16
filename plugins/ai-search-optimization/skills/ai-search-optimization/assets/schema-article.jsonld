@@ -1,0 +1,40 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "<<https://example.com/blog/post-slug#article>>",
+  "headline": "<<Article headline, ≤110 characters>>",
+  "description": "<<One-sentence summary of the article, ≤160 characters>>",
+  "image": [
+    "<<https://example.com/img/hero-1200x900.jpg>>"
+  ],
+  "datePublished": "<<2026-05-16T08:00:00-07:00>>",
+  "dateModified": "<<2026-05-16T08:00:00-07:00>>",
+  "author": {
+    "@type": "Person",
+    "name": "<<Author Full Name>>",
+    "url": "<<https://example.com/authors/author-slug>>",
+    "jobTitle": "<<Senior X Engineer>>",
+    "sameAs": [
+      "<<https://www.linkedin.com/in/author-handle/>>",
+      "<<https://github.com/author-handle>>"
+    ]
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "<<https://example.com/#organization>>",
+    "name": "<<Example Co.>>",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "<<https://example.com/logo-512x512.png>>"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "<<https://example.com/blog/post-slug>>"
+  },
+  "articleSection": "<<Section name, e.g. Engineering>>",
+  "wordCount": <<1850>>,
+  "keywords": "<<comma, separated, keywords>>"
+}
+</script>

@@ -1,0 +1,30 @@
+{
+  "name": "ai-search-optimization",
+  "description": "Audit and optimize a webpage or site for visibility in AI-powered search experiences (Google AI Overviews, AI Mode, ChatGPT Search, Perplexity, Claude, Gemini, Copilot). Anchored in Google's official AI optimization guide. Cleanly separates Google-stated rules from broader AISO/GEO industry practice.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Sumvec.ai",
+    "email": "connect@sumvec.ai",
+    "url": "https://sumvec.ai"
+  },
+  "homepage": "https://sumvec.ai",
+  "repository": "https://github.com/SumvecAI/claude-plugins",
+  "license": "MIT",
+  "keywords": [
+    "seo",
+    "aiso",
+    "geo",
+    "aeo",
+    "ai-search",
+    "ai-seo",
+    "google-ai-overviews",
+    "ai-mode",
+    "chatgpt-search",
+    "perplexity",
+    "generative-engine-optimization",
+    "answer-engine-optimization",
+    "schema",
+    "structured-data",
+    "llms-txt"
+  ]
+}

@@ -1,0 +1,53 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "@id": "<<https://example.com/products/sku-123#product>>",
+  "name": "<<Product name>>",
+  "description": "<<One-paragraph product description>>",
+  "image": [
+    "<<https://example.com/products/sku-123/1200x1200.jpg>>",
+    "<<https://example.com/products/sku-123/1200x900.jpg>>"
+  ],
+  "sku": "<<SKU-123>>",
+  "gtin13": "<<0012345678905>>",
+  "brand": {
+    "@type": "Brand",
+    "name": "<<Brand Name>>"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "<<https://example.com/products/sku-123>>",
+    "priceCurrency": "USD",
+    "price": "<<49.00>>",
+    "priceValidUntil": "<<2026-12-31>>",
+    "availability": "https://schema.org/InStock",
+    "itemCondition": "https://schema.org/NewCondition",
+    "shippingDetails": {
+      "@type": "OfferShippingDetails",
+      "shippingRate": {
+        "@type": "MonetaryAmount",
+        "value": "<<5.00>>",
+        "currency": "USD"
+      },
+      "shippingDestination": {
+        "@type": "DefinedRegion",
+        "addressCountry": "US"
+      }
+    },
+    "hasMerchantReturnPolicy": {
+      "@type": "MerchantReturnPolicy",
+      "applicableCountry": "US",
+      "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+      "merchantReturnDays": 30,
+      "returnMethod": "https://schema.org/ReturnByMail",
+      "returnFees": "https://schema.org/FreeReturn"
+    }
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "<<4.6>>",
+    "reviewCount": "<<128>>"
+  }
+}
+</script>

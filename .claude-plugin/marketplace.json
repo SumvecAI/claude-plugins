@@ -1,15 +1,59 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-plugin-marketplace.json",
   "name": "sumvecai",
+  "description": "Plugins from Sumvec.ai — practical, source-anchored tools for marketing, SEO, and AI search work. Built for teams who'd rather cite the primary source than chase the hype cycle.",
+  "version": "1.0.0",
   "owner": {
-    "name": "SumvecAI",
-    "url": "https://github.com/SumvecAI"
+    "name": "Sumvec.ai",
+    "email": "connect@sumvec.ai"
   },
-  "description": "Claude Code plugins maintained by SumvecAI.",
   "plugins": [
     {
-      "name": "hello-sumvec",
-      "source": "./plugins/hello-sumvec",
-      "description": "Placeholder plugin to verify the marketplace works."
+      "name": "ai-search-optimization",
+      "source": "./plugins/ai-search-optimization",
+      "description": "Audit and optimize a webpage or site for AI search visibility — Google AI Overviews, ChatGPT Search, Perplexity, Claude, Gemini. Anchored in Google's official AI optimization guide; clearly separates Google-stated rules from broader AISO/GEO industry practice.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Sumvec.ai",
+        "email": "connect@sumvec.ai",
+        "url": "https://sumvec.ai"
+      },
+      "homepage": "https://sumvec.ai",
+      "repository": "https://github.com/SumvecAI/claude-plugins",
+      "license": "MIT",
+      "category": "marketing",
+      "tags": [
+        "seo",
+        "ai-search",
+        "aiso",
+        "geo",
+        "google-ai-overviews",
+        "chatgpt-search",
+        "perplexity",
+        "schema",
+        "audit"
+      ],
+      "keywords": [
+        "seo",
+        "ai-seo",
+        "aiso",
+        "geo",
+        "aeo",
+        "ai-search",
+        "google-ai-overviews",
+        "ai-mode",
+        "chatgpt-search",
+        "perplexity",
+        "claude-search",
+        "gemini",
+        "copilot",
+        "schema",
+        "structured-data",
+        "llms-txt",
+        "generative-engine-optimization",
+        "answer-engine-optimization",
+        "rag-visibility"
+      ]
     }
   ]
 }

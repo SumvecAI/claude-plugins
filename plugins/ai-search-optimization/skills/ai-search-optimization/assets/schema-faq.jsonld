@@ -1,0 +1,32 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "<<Question 1, phrased the way a user would search it?>>",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "<<2–4 sentence answer. Match the visible answer on the page exactly.>>"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "<<Question 2?>>",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "<<Answer 2.>>"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "<<Question 3?>>",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "<<Answer 3.>>"
+      }
+    }
+  ]
+}
+</script>
