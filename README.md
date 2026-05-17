@@ -57,4 +57,4 @@ Issues, suggestions, and pull requests are welcome.
 
 ## About Sumvec.ai
 
-Sumvec.ai builds practical AI tooling for marketers, founders, and operators who care about doing the work properly. Learn more at [sumvec.ai](https://sumvec.ai).
+We are a trusted AI-native consulting and solutions company on a mission to deliver multiplicative new capabilities and radical new relevance to enterprises at speed through human-machine teaming. Learn more at [sumvec.ai](https://sumvec.ai).
