@@ -110,26 +110,31 @@ Bulleted list of every URL cited above, grouped by source class:
 - **Industry practice (no canonical source):** brief notes.
 ```
 
-## Then render a Sumvec-branded PDF companion
+## Then render a Sumvec-branded HTML report (and PDF if Chrome is installed)
 
-After the Markdown file is written, invoke the bundled PDF generator:
+After the Markdown file is written, invoke the bundled report generator:
 
 ```bash
-python scripts/generate_pdf.py <path-to-md-report> --target-url <the-audited-url>
+python scripts/generate_report.py <path-to-md-report> --target-url <the-audited-url>
 ```
 
-The PDF is written next to the Markdown report with the filename pattern `<host>-<YYYY-MM-DD>-<HHMM>.pdf` (e.g. `sumvec-ai-2026-05-17-2345.pdf`). It carries Sumvec branding: dark-navy cover, Sumvec Blue / Orange accent bar, the Sumvec logo, page numbers, and a citation-discipline footer.
+The script is **stdlib-only** — no `pip install` required.
 
-The PDF generator requires `weasyprint` and `markdown` (`pip install weasyprint markdown`). If they aren't installed the script prints an install instruction and exits 0 — never blocks the audit. In that case, surface the install command to the user along with the Markdown path and let them re-run the PDF step after installing.
+- It always writes a self-contained HTML report at `<host>-<YYYY-MM-DD>-<HHMM>.html` (inline CSS, inline Sumvec logo, no external fetches — opens in any browser).
+- If a Chromium-family browser (Chrome / Brave / Chromium / Edge) is detected, it also writes `<host>-<YYYY-MM-DD>-<HHMM>.pdf` via headless print-to-PDF.
+- If no such browser is found, the HTML is still produced and the script prints a one-line instruction to use the user's own browser's Print → Save as PDF.
+
+Sumvec branding: dark-navy cover, accent bar (Sumvec Blue → Sumvec Orange gradient), the Sumvec logo, page numbers, and a citation-discipline footer.
 
 ## Final output to the user
 
 Print, in this order:
 
 1. The absolute path of the Markdown audit report.
-2. The absolute path of the PDF (or the install instruction if PDF generation was skipped).
-3. A 3-bullet summary (matches the report's TL;DR).
-4. The top P0 action verbatim.
+2. The absolute path of the HTML report.
+3. The absolute path of the PDF (or the print-to-PDF instruction if no Chromium-family browser is installed).
+4. A 3-bullet summary (matches the report's TL;DR).
+5. The top P0 action verbatim.
 
 Do not commit the report. Do not open a PR. Do not modify any files on the audited site.
 

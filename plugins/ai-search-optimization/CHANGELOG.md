@@ -5,6 +5,29 @@ All notable changes to this plugin are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] — 2026-05-17
+
+### Changed — zero-dependency rewrite
+
+The whole plugin now runs on **Python standard library only**. Users install with `/plugin install ai-search-optimization@sumvecai` and everything works immediately — no `pip install`, no `brew install`, no system-package management.
+
+- `scripts/fetch_and_audit.py` rewritten using `urllib.request` + `html.parser` (was `requests` + `beautifulsoup4`). Adds robust gzip handling via magic-byte detection and case-insensitive HTTP header lookup.
+- `scripts/check_schema.py` rewritten the same way.
+- `scripts/generate_pdf.py` removed and replaced by `scripts/generate_report.py`:
+  - Always writes a self-contained branded **HTML** report (inline CSS, inline base64 Sumvec logo, no external fetches).
+  - If a Chromium-family browser (Chrome / Brave / Chromium / Edge) is found on the system, **also** writes a PDF via headless print-to-PDF.
+  - If no such browser is found, the HTML is still produced and the user is told to print-to-PDF from their own browser (`Cmd-P` / `Ctrl-P` → Save as PDF). No pip dependency on `weasyprint`, no system dependency on `pango`.
+
+### Why this is a major bump
+
+- Behavior change: PDF generation no longer requires `pip install weasyprint markdown` + `brew install pango`. v1.2.0 install instructions in the wild are stale.
+- Script signatures changed: `generate_pdf.py` is gone; the new entry point is `generate_report.py`. SKILL.md and `/aiso-audit` were updated; any external invocations need the new name.
+- Output filenames are unchanged for HTML/PDF (`<host>-<YYYY-MM-DD>-<HHMM>.{html,pdf}`); Markdown report path is unchanged.
+
+### Why this matters for marketplace review
+
+A clean plugin with zero third-party Python deps is faster to review, easier to audit for security, and trivially install-and-go for end users — important for both Anthropic's official directory submission and community awesome-list listings.
+
 ## [1.2.0] — 2026-05-17
 
 ### Added

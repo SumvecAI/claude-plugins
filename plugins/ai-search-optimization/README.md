@@ -1,7 +1,7 @@
 # ai-search-optimization
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-1.2.0-0E0E0E)](./.claude-plugin/plugin.json)
+[![Version](https://img.shields.io/badge/Version-2.0.0-0E0E0E)](./.claude-plugin/plugin.json)
 [![Maintained by Sumvec.ai](https://img.shields.io/badge/Maintained%20by-Sumvec.ai-D4A27F)](https://sumvec.ai)
 
 A Claude Code plugin that **audits and optimizes a webpage or site for AI search visibility** — Google AI Overviews, Google AI Mode, ChatGPT Search, Perplexity, Claude, Gemini, and Copilot.
@@ -47,9 +47,9 @@ Or invoke the slash command directly with a URL:
 /aiso-audit example.com
 ```
 
-The command runs the full 10-step workflow, stamps every finding with its source class — `[google: <url>]`, `[research: <url>]`, `[vendor: <url>]`, or `[Industry practice]` — writes the audit to `./aiso-audit-<host>-<date>.md`, **and renders a Sumvec-branded PDF** at `./<host>-<YYYY-MM-DD>-<HHMM>.pdf` (cover page, brand palette, page numbers, source-attribution footer). For a sitemap or bare domain, it asks which pages to audit first (default: 3–8 representative pages).
+The command runs the full 10-step workflow, stamps every finding with its source class — `[google: <url>]`, `[research: <url>]`, `[vendor: <url>]`, or `[Industry practice]` — writes the audit to `./aiso-audit-<host>-<date>.md`, **renders a Sumvec-branded HTML report** at `./<host>-<YYYY-MM-DD>-<HHMM>.html` (cover page, brand palette, page numbers, source-attribution footer), and **renders a PDF** at the same base name if a Chromium-family browser (Chrome / Brave / Chromium / Edge) is installed on the machine. For a sitemap or bare domain, it asks which pages to audit first (default: 3–8 representative pages).
 
-The PDF step requires `pip install weasyprint markdown` — if the deps aren't present, the Markdown report is still produced and the script prints an install hint.
+**Zero external dependencies.** The plugin's helper scripts use only the Python standard library. No `pip install`, no `brew install`. If no Chromium-family browser is installed, the HTML is still produced and you can print-to-PDF from any browser (Cmd-P / Ctrl-P → Save as PDF).
 
 You can also invoke the skill without a slash command:
 
@@ -83,10 +83,10 @@ ai-search-optimization/
 │       │   ├── schema-product.jsonld
 │       │   ├── llms.txt.example
 │       │   └── prepublish-checklist.md
-│       └── scripts/                          ← optional helpers
+│       └── scripts/                          ← stdlib-only helpers (no pip required)
 │           ├── fetch_and_audit.py            ← URL → Markdown audit summary
 │           ├── check_schema.py               ← JSON-LD validity & missing fields
-│           └── generate_pdf.py               ← Sumvec-branded PDF of the audit (needs weasyprint + markdown)
+│           └── generate_report.py            ← branded HTML always, PDF if a Chromium-family browser is installed
 ├── README.md
 └── LICENSE
 ```
