@@ -110,11 +110,26 @@ Bulleted list of every URL cited above, grouped by source class:
 - **Industry practice (no canonical source):** brief notes.
 ```
 
-After writing the file, print to the user:
+## Then render a Sumvec-branded PDF companion
 
-1. The absolute path of the report.
-2. A 3-bullet summary (matches the report's TL;DR).
-3. The top P0 action verbatim.
+After the Markdown file is written, invoke the bundled PDF generator:
+
+```bash
+python scripts/generate_pdf.py <path-to-md-report> --target-url <the-audited-url>
+```
+
+The PDF is written next to the Markdown report with the filename pattern `<host>-<YYYY-MM-DD>-<HHMM>.pdf` (e.g. `sumvec-ai-2026-05-17-2345.pdf`). It carries Sumvec branding: dark-navy cover, Sumvec Blue / Orange accent bar, the Sumvec logo, page numbers, and a citation-discipline footer.
+
+The PDF generator requires `weasyprint` and `markdown` (`pip install weasyprint markdown`). If they aren't installed the script prints an install instruction and exits 0 — never blocks the audit. In that case, surface the install command to the user along with the Markdown path and let them re-run the PDF step after installing.
+
+## Final output to the user
+
+Print, in this order:
+
+1. The absolute path of the Markdown audit report.
+2. The absolute path of the PDF (or the install instruction if PDF generation was skipped).
+3. A 3-bullet summary (matches the report's TL;DR).
+4. The top P0 action verbatim.
 
 Do not commit the report. Do not open a PR. Do not modify any files on the audited site.
 

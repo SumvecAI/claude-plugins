@@ -107,8 +107,19 @@ Inline links to Google's documentation for every Google-attributed claim.
 
 - `scripts/fetch_and_audit.py <url>` — Fetches a URL, extracts headings, JSON-LD blocks, meta tags, image alt coverage; fetches `/robots.txt` and looks for the major AI crawler directives; emits a Markdown summary.
 - `scripts/check_schema.py <url>` — Parses JSON-LD on a page and reports which Schema.org types are present, missing recommended fields, and obvious errors.
+- `scripts/generate_pdf.py <path-to-audit.md> [--target-url <url>]` — Renders the finished Markdown audit into a Sumvec-branded PDF (cover page, brand palette, page numbers, footer attribution). Filename pattern: `<host>-<YYYY-MM-DD>-<HHMM>.pdf`. Requires `weasyprint` and `markdown` (`pip install weasyprint markdown`); if those aren't installed the script prints an install hint and exits cleanly so the Markdown deliverable is never blocked.
 
-Both scripts are intentionally dependency-light (`requests`, `beautifulsoup4`) and print results to stdout in Markdown so the output can be pasted directly into the audit report.
+`fetch_and_audit.py` and `check_schema.py` are dependency-light (`requests`, `beautifulsoup4`) and print to stdout. `generate_pdf.py` is opt-in — only invoke it once the Markdown report is final.
+
+## Closing the audit: produce both Markdown and PDF
+
+After writing the Markdown audit, run `scripts/generate_pdf.py` to produce the branded PDF companion:
+
+```bash
+python scripts/generate_pdf.py <path-to-audit.md> --target-url <audited-url>
+```
+
+The PDF lands next to the Markdown report. Report both paths to the user. If `weasyprint`/`markdown` aren't installed, surface the install command from the script's stderr output and continue — the Markdown report is the authoritative deliverable; the PDF is a hand-off-friendly mirror.
 
 ## A note on style
 

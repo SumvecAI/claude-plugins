@@ -1,7 +1,7 @@
 # ai-search-optimization
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-1.1.0-0E0E0E)](./.claude-plugin/plugin.json)
+[![Version](https://img.shields.io/badge/Version-1.2.0-0E0E0E)](./.claude-plugin/plugin.json)
 [![Maintained by Sumvec.ai](https://img.shields.io/badge/Maintained%20by-Sumvec.ai-D4A27F)](https://sumvec.ai)
 
 A Claude Code plugin that **audits and optimizes a webpage or site for AI search visibility** — Google AI Overviews, Google AI Mode, ChatGPT Search, Perplexity, Claude, Gemini, and Copilot.
@@ -47,7 +47,9 @@ Or invoke the slash command directly with a URL:
 /aiso-audit example.com
 ```
 
-The command runs the full 10-step workflow, stamps every finding with its source class — `[google: <url>]`, `[research: <url>]`, `[vendor: <url>]`, or `[Industry practice]` — and writes the audit to `./aiso-audit-<host>-<date>.md`. For a sitemap or bare domain, it asks which pages to audit first (default: 3–8 representative pages).
+The command runs the full 10-step workflow, stamps every finding with its source class — `[google: <url>]`, `[research: <url>]`, `[vendor: <url>]`, or `[Industry practice]` — writes the audit to `./aiso-audit-<host>-<date>.md`, **and renders a Sumvec-branded PDF** at `./<host>-<YYYY-MM-DD>-<HHMM>.pdf` (cover page, brand palette, page numbers, source-attribution footer). For a sitemap or bare domain, it asks which pages to audit first (default: 3–8 representative pages).
+
+The PDF step requires `pip install weasyprint markdown` — if the deps aren't present, the Markdown report is still produced and the script prints an install hint.
 
 You can also invoke the skill without a slash command:
 
@@ -83,7 +85,8 @@ ai-search-optimization/
 │       │   └── prepublish-checklist.md
 │       └── scripts/                          ← optional helpers
 │           ├── fetch_and_audit.py            ← URL → Markdown audit summary
-│           └── check_schema.py               ← JSON-LD validity & missing fields
+│           ├── check_schema.py               ← JSON-LD validity & missing fields
+│           └── generate_pdf.py               ← Sumvec-branded PDF of the audit (needs weasyprint + markdown)
 ├── README.md
 └── LICENSE
 ```
