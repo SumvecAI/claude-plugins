@@ -1,10 +1,12 @@
 # ai-search-optimization
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-2.0.0-0E0E0E)](./.claude-plugin/plugin.json)
+[![Version](https://img.shields.io/badge/Version-2.1.0-0E0E0E)](./.claude-plugin/plugin.json)
 [![Maintained by Sumvec.ai](https://img.shields.io/badge/Maintained%20by-Sumvec.ai-D4A27F)](https://sumvec.ai)
 
 A Claude Code plugin that **audits and optimizes a webpage or site for AI search visibility** — Google AI Overviews, Google AI Mode, ChatGPT Search, Perplexity, Claude, Gemini, and Copilot.
+
+![Sample audit cover — AI Search Optimization Audit for catalognow.ai, Sumvec.AI branded](./media/audit-cover-preview.png)
 
 Anchored in [Google's official AI Optimization Guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide). Every Google-attributed claim is cited inline. Every recommendation that comes from broader industry practice is explicitly labeled `[Industry practice]`. No SEO mythology, no GEO hacks Google has explicitly debunked.
 
@@ -49,6 +51,12 @@ Or invoke the slash command directly with a URL:
 
 The command runs the full 10-step workflow, stamps every finding with its source class — `[google: <url>]`, `[research: <url>]`, `[vendor: <url>]`, or `[Industry practice]` — writes the audit to `./aiso-audit-<host>-<date>.md`, **renders a Sumvec-branded HTML report** at `./<host>-<YYYY-MM-DD>-<HHMM>.html` (cover page, brand palette, page numbers, source-attribution footer), and **renders a PDF** at the same base name if a Chromium-family browser (Chrome / Brave / Chromium / Edge) is installed on the machine. For a sitemap or bare domain, it asks which pages to audit first (default: 3–8 representative pages).
 
+For JavaScript-heavy SPAs (Next.js, React, etc.) where the initial HTML carries little content, pass `--render` to `scripts/fetch_and_audit.py` and the script will use the same headless browser to fetch the post-JS rendered DOM:
+
+```bash
+python scripts/fetch_and_audit.py --render https://example.com
+```
+
 **Zero external dependencies.** The plugin's helper scripts use only the Python standard library. No `pip install`, no `brew install`. If no Chromium-family browser is installed, the HTML is still produced and you can print-to-PDF from any browser (Cmd-P / Ctrl-P → Save as PDF).
 
 You can also invoke the skill without a slash command:
@@ -84,9 +92,14 @@ ai-search-optimization/
 │       │   ├── llms.txt.example
 │       │   └── prepublish-checklist.md
 │       └── scripts/                          ← stdlib-only helpers (no pip required)
-│           ├── fetch_and_audit.py            ← URL → Markdown audit summary
+│           ├── _chrome.py                    ← shared Chromium-family browser detection
+│           ├── fetch_and_audit.py            ← URL → Markdown audit summary (use --render for SPAs)
 │           ├── check_schema.py               ← JSON-LD validity & missing fields
 │           └── generate_report.py            ← branded HTML always, PDF if a Chromium-family browser is installed
+├── tests/
+│   └── test_check_schema.py                  ← unittest, stdlib only, runs in CI
+└── media/
+    └── audit-cover-preview.png
 ├── README.md
 └── LICENSE
 ```

@@ -23,13 +23,14 @@ from __future__ import annotations
 import argparse
 import base64
 import datetime as dt
-import os
 import re
-import shutil
 import subprocess
 import sys
 from pathlib import Path
 from urllib.parse import urlparse
+
+# Local module — same directory; relies on Python adding script-dir to sys.path
+from _chrome import find_chromium_binary
 
 
 SUMVEC_BLUE = "#00A5E0"
@@ -469,47 +470,7 @@ def build_html(md: str, target_url: str, generated_at: dt.datetime, logo_uri: st
 </html>"""
 
 
-# ------------------------------ Browser detection ------------------------------
-
-def find_chromium_binary() -> str | None:
-    candidates: list[str] = [
-        # macOS app bundles
-        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-        "/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary",
-        "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
-        "/Applications/Chromium.app/Contents/MacOS/Chromium",
-        "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
-        # Linux conventional paths
-        "/usr/bin/google-chrome",
-        "/usr/bin/google-chrome-stable",
-        "/usr/bin/chromium",
-        "/usr/bin/chromium-browser",
-        "/usr/bin/brave-browser",
-        "/snap/bin/chromium",
-        # Windows
-        os.path.expandvars(r"%ProgramFiles%\Google\Chrome\Application\chrome.exe"),
-        os.path.expandvars(r"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe"),
-        os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe"),
-        os.path.expandvars(r"%ProgramFiles%\Microsoft\Edge\Application\msedge.exe"),
-    ]
-    for c in candidates:
-        if c and os.path.exists(c):
-            return c
-    # Fall back to PATH lookup
-    for name in (
-        "google-chrome",
-        "google-chrome-stable",
-        "chromium",
-        "chromium-browser",
-        "brave-browser",
-        "msedge",
-        "chrome",
-    ):
-        found = shutil.which(name)
-        if found:
-            return found
-    return None
-
+# ----------------------------- PDF via headless Chrome --------------------------
 
 def render_pdf_via_chromium(chrome: str, html_path: Path, pdf_path: Path) -> bool:
     """Run headless Chrome to render html_path → pdf_path. Return True on success."""

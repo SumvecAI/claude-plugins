@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: Test on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Syntax-check all plugin scripts
+        run: |
+          python -m py_compile \
+            plugins/ai-search-optimization/skills/ai-search-optimization/scripts/*.py
+
+      - name: Run unit tests
+        run: python -m unittest discover -s plugins/ai-search-optimization/tests -v
+
+      - name: Validate marketplace.json is valid JSON
+        run: python -c "import json; json.load(open('.claude-plugin/marketplace.json'))"
+
+      - name: Validate every plugin.json is valid JSON
+        run: |
+          for f in plugins/*/.claude-plugin/plugin.json; do
+            echo "Validating $f"
+            python -c "import json,sys; json.load(open('$f'))"
+          done
+
+      - name: Sanity-check the slash command file
+        run: |
+          test -f plugins/ai-search-optimization/commands/aiso-audit.md
+          head -1 plugins/ai-search-optimization/commands/aiso-audit.md | grep -q '^---$'
+
+      - name: Sanity-check the SKILL.md frontmatter
+        run: |
+          test -f plugins/ai-search-optimization/skills/ai-search-optimization/SKILL.md
+          head -1 plugins/ai-search-optimization/skills/ai-search-optimization/SKILL.md | grep -q '^---$'
+
+      - name: Verify zero third-party Python dependencies
+        run: |
+          # The plugin's value prop is "zero pip installs needed". Any pip-installable
+          # dep would break that promise. Allow only stdlib + local relative imports.
+          ! grep -RnE '^(import|from) (requests|bs4|beautifulsoup4|weasyprint|markdown|lxml|httpx|aiohttp)\b' \
+            plugins/ai-search-optimization/skills/ai-search-optimization/scripts/

@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-marketplace.json",
   "name": "sumvecai",
   "description": "Plugins from Sumvec.ai — practical, source-anchored tools for marketing, SEO, and AI search work. Built for teams who'd rather cite the primary source than chase the hype cycle.",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "owner": {
     "name": "Sumvec.ai",
     "email": "connect@sumvec.ai"
@@ -12,7 +12,7 @@
       "name": "ai-search-optimization",
       "source": "./plugins/ai-search-optimization",
       "description": "Audit and optimize a webpage or site for AI search visibility — Google AI Overviews, ChatGPT Search, Perplexity, Claude, Gemini. Anchored in Google's official AI optimization guide; clearly separates Google-stated rules from broader AISO/GEO industry practice. Zero external dependencies — all scripts use Python stdlib only. /aiso-audit produces Markdown + Sumvec-branded HTML, plus PDF if a Chromium-family browser is installed.",
-      "version": "2.0.1",
+      "version": "2.1.0",
       "author": {
         "name": "Sumvec.ai",
         "email": "connect@sumvec.ai",

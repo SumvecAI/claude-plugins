@@ -5,6 +5,25 @@ All notable changes to this plugin are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] — 2026-05-19
+
+### Added
+
+- **`--render` flag for `fetch_and_audit.py`.** Uses the system's headless Chromium-family browser (the same one `generate_report.py` already detects for PDF) to fetch the post-JS rendered DOM via `--dump-dom`. Required for SPAs / Next.js / React-heavy pages where the static HTML carries little content. Falls back to the static fetch with a stderr warning if no browser is installed.
+- **`scripts/_chrome.py`** — shared Chromium-family browser detection used by `fetch_and_audit.py --render` and `generate_report.py`. Searches platform-specific app bundle paths first, then PATH lookups for common binary names. Single source of truth replaces the duplicated detection logic.
+- **GitHub Actions CI** (`.github/workflows/ci.yml`). Runs on push and PR across Python 3.10 / 3.11 / 3.12: syntax-checks all plugin scripts, runs the unittest suite, validates every JSON manifest, sanity-checks the SKILL.md and slash-command frontmatter, and **enforces the zero-dependency promise** by failing the build if any script imports `requests` / `bs4` / `weasyprint` / `markdown` / `lxml` / `httpx` / `aiohttp`.
+- **Demo screenshot** (`media/audit-cover-preview.png`) embedded in the plugin README — shows the Sumvec-branded cover and the start of an audit. Materially raises click-through on the marketplace listing.
+
+### Changed
+
+- `generate_report.py` now imports `find_chromium_binary` from `_chrome.py` instead of defining it locally. Behavior unchanged.
+- README's "What's inside" tree updated to reflect the new file layout (`_chrome.py`, `tests/`, `media/`).
+- SKILL.md and `/aiso-audit` command updated to recommend `--render` when the static fetch's render-hint warns the page is JS-heavy.
+
+### Why this matters
+
+`--render` closes one of the most common real-world audit failures: a static fetch on a modern marketing site returns 5KB of body text + 80KB of inline JS chunks, and every content-quality dimension scores artificially low. Routing through headless Chrome gives an honest read of what Googlebot's web rendering service actually sees. The CI workflow makes the zero-dep promise machine-verifiable, which matters for both Anthropic's marketplace review and any community awesome-list maintainer doing due diligence.
+
 ## [2.0.1] — 2026-05-19
 
 ### Fixed

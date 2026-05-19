@@ -24,7 +24,7 @@ If `$ARGUMENTS` is empty or malformed, ask the user for a URL and stop.
 Follow the audit workflow defined in this plugin's skill (`skills/ai-search-optimization/SKILL.md`). Do not paraphrase it — load it and run all 10 steps in order:
 
 1. Inputs — confirm target URL(s), 3–5 representative queries, which AI engines matter most, and the audience.
-2. Crawlability & indexability check — use `scripts/fetch_and_audit.py <url>` to gather robots.txt, headers, render hint, AI-crawler policy.
+2. Crawlability & indexability check — use `scripts/fetch_and_audit.py <url>` to gather robots.txt, headers, render hint, AI-crawler policy. If the render hint flags the page as JavaScript-heavy, re-run with `python scripts/fetch_and_audit.py --render <url>` to get the post-JS rendered DOM via headless Chrome.
 3. Content quality — score against Google's four published dimensions (`references/google-aiso-principles.md` §2).
 4. Structured data — use `scripts/check_schema.py <url>` and recommend missing schema with templates from `assets/`.
 5. Passage/chunk structure (honestly framed — Google says chunking is not required).

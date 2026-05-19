@@ -20,19 +20,24 @@ Dependencies: Python 3.9+ standard library only.
 
 from __future__ import annotations
 
+import argparse
 import gzip
 import json
 import re
 import ssl
+import subprocess
 import sys
 from html.parser import HTMLParser
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse, urljoin
 from urllib.request import Request, urlopen
 
+from _chrome import find_chromium_binary
+
 
 USER_AGENT = "ai-search-optimization-skill/2.0 (+https://sumvec.ai)"
 TIMEOUT = 15
+RENDER_TIMEOUT = 30
 
 AI_CRAWLERS = [
     "Googlebot",
@@ -60,10 +65,50 @@ def _ssl_context() -> ssl.SSLContext:
     return ctx
 
 
-def fetch(url: str) -> tuple[int, dict, str, str]:
-    """Return (status, headers, final_url, body_text)."""
+def fetch_rendered(chrome: str, url: str) -> str | None:
+    """Use headless Chrome --dump-dom to fetch the post-JS rendered HTML.
+
+    Returns the rendered DOM as a string, or None if the subprocess fails.
+    Used when --render is passed to audit JS-heavy / single-page apps where
+    the static HTML carries no content.
+    """
+    cmd = [
+        chrome,
+        "--headless=new",
+        "--disable-gpu",
+        "--no-sandbox",
+        "--virtual-time-budget=5000",
+        "--user-agent=" + USER_AGENT,
+        "--dump-dom",
+        url,
+    ]
+    try:
+        result = subprocess.run(
+            cmd, capture_output=True, text=True,
+            timeout=RENDER_TIMEOUT, check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired) as e:
+        print(f"[fetch_and_audit] Chrome render failed: {e}", file=sys.stderr)
+        return None
+    if result.returncode != 0:
+        err = (result.stderr or "").strip()
+        print(f"[fetch_and_audit] Chrome exited {result.returncode}: {err[:200]}", file=sys.stderr)
+        return None
+    return result.stdout or None
+
+
+def fetch(url: str, render: bool = False) -> tuple[int, dict, str, str]:
+    """Return (status, headers, final_url, body_text).
+
+    Always performs a static fetch (so we keep real HTTP headers, status,
+    redirects). When `render=True`, additionally runs the URL through
+    headless Chrome's --dump-dom and substitutes the rendered HTML for the
+    body. Headers + status still come from the static fetch — Chrome's
+    --dump-dom does not expose response metadata.
+    """
     req = Request(url, headers={"User-Agent": USER_AGENT, "Accept-Encoding": "gzip, identity"})
     with urlopen(req, timeout=TIMEOUT, context=_ssl_context()) as resp:
+        status = resp.status
         final_url = resp.geturl()
         # Case-insensitive lookup; urllib's HTTPMessage doesn't lowercase keys
         headers_lc = {k.lower(): v for k, v in resp.headers.items()}
@@ -83,7 +128,27 @@ def fetch(url: str) -> tuple[int, dict, str, str]:
             body = raw.decode(charset, errors="replace")
         except LookupError:
             body = raw.decode("utf-8", errors="replace")
-        return resp.status, headers_lc, final_url, body
+
+    # Optional second pass: rendered DOM via headless Chrome. Static headers
+    # + status code are kept; only the body is replaced when render succeeds.
+    if render:
+        chrome = find_chromium_binary()
+        if not chrome:
+            print(
+                "[fetch_and_audit] --render requested but no Chromium-family browser "
+                "found; falling back to static HTML.",
+                file=sys.stderr,
+            )
+        else:
+            rendered = fetch_rendered(chrome, final_url)
+            if rendered:
+                body = rendered
+            else:
+                print(
+                    "[fetch_and_audit] Chrome render failed; falling back to static HTML.",
+                    file=sys.stderr,
+                )
+    return status, headers_lc, final_url, body
 
 
 def fetch_robots(base_url: str) -> tuple[str, str | None]:
@@ -277,15 +342,26 @@ def _collect_types(node) -> list[str]:
 
 
 def main() -> int:
-    if len(sys.argv) != 2:
-        print(__doc__)
-        return 1
-    url = sys.argv[1]
+    ap = argparse.ArgumentParser(
+        description="Fetch a URL and produce a Markdown audit summary (stdlib-only).",
+    )
+    ap.add_argument("url", help="The URL to audit. Bare domain accepted.")
+    ap.add_argument(
+        "--render",
+        action="store_true",
+        help="Use headless Chrome to fetch the post-JS rendered DOM. "
+        "Required for SPAs / Next.js / React-heavy pages where the static HTML "
+        "carries little content. Falls back to static fetch if no Chromium-family "
+        "browser is installed.",
+    )
+    args = ap.parse_args()
+
+    url = args.url
     if "://" not in url:
         url = "https://" + url
 
     try:
-        status, headers, final_url, body = fetch(url)
+        status, headers, final_url, body = fetch(url, render=args.render)
     except (HTTPError, URLError, TimeoutError) as e:
         print(f"# Audit error\n\nFailed to fetch {url}: {e}")
         return 1

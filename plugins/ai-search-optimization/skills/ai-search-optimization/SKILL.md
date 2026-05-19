@@ -107,7 +107,7 @@ Inline links to Google's documentation for every Google-attributed claim.
 
 All three helper scripts are **Python standard library only** — no `pip install` required. They run on any system with Python 3.9+.
 
-- `scripts/fetch_and_audit.py <url>` — Fetches a URL, extracts headings, JSON-LD blocks, meta tags, image alt coverage; fetches `/robots.txt` and looks for the major AI crawler directives; emits a Markdown summary.
+- `scripts/fetch_and_audit.py <url> [--render]` — Fetches a URL, extracts headings, JSON-LD blocks, meta tags, image alt coverage; fetches `/robots.txt` and looks for the major AI crawler directives; emits a Markdown summary. Pass `--render` for SPAs (Next.js, React) — the script will use headless Chrome to fetch the post-JS rendered DOM. Falls back to static fetch if no Chromium-family browser is installed.
 - `scripts/check_schema.py <url>` — Parses JSON-LD on a page and reports which Schema.org types are present, missing recommended fields, and obvious errors.
 - `scripts/generate_report.py <path-to-audit.md> --target-url <url>` — Renders the finished Markdown audit into a Sumvec-branded **HTML** report (cover page, brand palette, page numbers, source-attribution footer). Always produces HTML; **also produces a PDF if a Chromium-family browser (Chrome / Brave / Chromium / Edge) is installed on the system**. Filename pattern: `<host>-<YYYY-MM-DD>-<HHMM>.{html,pdf}`.
 
