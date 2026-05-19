@@ -1,7 +1,7 @@
 {
   "name": "ai-search-optimization",
   "description": "Audit and optimize a webpage or site for visibility in AI-powered search experiences (Google AI Overviews, AI Mode, ChatGPT Search, Perplexity, Claude, Gemini, Copilot). Anchored in Google's official AI optimization guide. Cleanly separates Google-stated rules from broader AISO/GEO industry practice.",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": {
     "name": "Sumvec.ai",
     "email": "connect@sumvec.ai",

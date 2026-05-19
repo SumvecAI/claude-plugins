@@ -127,6 +127,31 @@ def fetch(url: str) -> tuple[int, dict, str, str]:
         return resp.status, headers, resp.geturl(), body
 
 
+def _flatten_entities(data) -> list:
+    """Expand top-level @graph containers and JSON-LD lists into individual entities.
+
+    Real-world JSON-LD frequently uses the @graph pattern (every Next.js site,
+    plus many CMS templates) — a wrapper object with @context + @graph: [...]
+    and no root @type. This helper returns a flat list of entity dicts so
+    downstream type-checking can inspect each one individually.
+    """
+    if isinstance(data, list):
+        out: list = []
+        for item in data:
+            out.extend(_flatten_entities(item))
+        return out
+    if isinstance(data, dict):
+        graph = data.get("@graph")
+        if isinstance(graph, list) and graph:
+            # @graph wins: replace the container with its members.
+            entities: list = []
+            for item in graph:
+                entities.extend(_flatten_entities(item))
+            return entities
+        return [data]
+    return []
+
+
 class _JsonLdExtractor(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
@@ -153,11 +178,8 @@ class _JsonLdExtractor(HTMLParser):
             except json.JSONDecodeError as e:
                 self.blocks.append({"error": str(e), "raw": raw[:300]})
                 return
-            if isinstance(data, list):
-                for item in data:
-                    self.blocks.append({"data": item})
-            else:
-                self.blocks.append({"data": data})
+            for entity in _flatten_entities(data):
+                self.blocks.append({"data": entity})
 
     def handle_data(self, data: str) -> None:
         if self._capture:

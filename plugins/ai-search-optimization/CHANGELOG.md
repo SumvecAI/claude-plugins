@@ -5,6 +5,16 @@ All notable changes to this plugin are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] — 2026-05-19
+
+### Fixed
+
+- **`check_schema.py` now correctly handles JSON-LD `@graph` containers.** Previously, any page that wrapped its entities in the standard `{ "@context": "...", "@graph": [...] }` pattern (every Next.js site and many CMS templates) caused the script to report `@type: (missing)` — confusing because `fetch_and_audit.py` correctly identified the inner types on the same page. The fix introduces `_flatten_entities()` which unwraps `@graph` arrays into their child entities so each is type-checked individually. The catalognow.ai audit (which surfaced this bug) now correctly reports `WebSite`, `Organization`, and `SoftwareApplication` blocks with their per-type required/recommended field analysis.
+
+### Added
+
+- `plugins/ai-search-optimization/tests/test_check_schema.py` — first test file in the plugin. Three stdlib-only `unittest` cases covering (1) `@graph` extraction, (2) traditional root `@type`, and (3) top-level JSON arrays. Sets up the test pattern for the v2.1.0 expansion.
+
 ## [2.0.0] — 2026-05-17
 
 ### Changed — zero-dependency rewrite
